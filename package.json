@@ -1,0 +1,19 @@
+{
+  "name": "my-first-web-component",
+  "version": "1.0.0",
+  "description": "My first web component",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://brettdewoody@github.com/brettdewoody/my-first-web-component.git"
+  },
+  "keywords": ["webcomponent"],
+  "author": "Brett DeWoody <brettdewoody@gmail.com> (http://brettdewoody.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/brettdewoody/my-first-web-component/issues"
+  },
+  "homepage": "https://github.com/brettdewoody/my-first-web-component#readme"
+}
