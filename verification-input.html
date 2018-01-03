@@ -1,13 +1,18 @@
 <!-- Defines the web component template -->
 <template id="verification-input-template">
-    <div>
-      <input />
-      <input />
-      <input />
-      <input />
-      <input />
-      <input />
-    </div>
+  <style>
+    input {
+      font-size: 24px;
+    }
+  </style>
+  <div>
+    <input />
+    <input />
+    <input />
+    <input />
+    <input />
+    <input />
+  </div>
 </template>
 
 <script>
@@ -37,8 +42,8 @@
     shadowRoot.appendChild(clone);
   };
 
-  // Registers <verification-input> in the main document
-  window.MyElement = thatDoc.registerElement("verification-input", {
+  // Registers <x-verification-input> in the main document
+  window.MyElement = thatDoc.registerElement("x-verification-input", {
     prototype: VerificationInput
   });
 })(window, document);
