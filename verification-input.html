@@ -17,34 +17,27 @@
 
 <script>
 (function(window, document, undefined) {
-  // Refers to the "importer", which is index.html
+  // Refers to the "importer"
   var thatDoc = document;
 
-  // Refers to the "importee", which is src/hello-world.html
+  // Refers to the "importee"
   var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
 
   // Gets content from <template>
   const template = thisDoc.querySelector("#verification-input-template").content;
 
   // Creates an object based in the HTML Element prototype
-  var VerificationInput = Object.create(HTMLElement.prototype);
+  class VerificationInput extends HTMLElement {
+    connectedCallback() {
+      // Creates the shadow root
+      var shadowRoot = this.createShadowRoot();
 
-  // Creates the "who" attribute and sets a default value
-  VerificationInput.who = "World";
+      // Adds a template clone into shadow root
+      var clone = thatDoc.importNode(template, true);
+      shadowRoot.appendChild(clone);
+    }
+  }
 
-  // Fires when an instance of the element is created
-  VerificationInput.createdCallback = function() {
-    // Creates the shadow root
-    var shadowRoot = this.createShadowRoot();
-
-    // Adds a template clone into shadow root
-    var clone = thatDoc.importNode(template, true);
-    shadowRoot.appendChild(clone);
-  };
-
-  // Registers <x-verification-input> in the main document
-  window.MyElement = thatDoc.registerElement("x-verification-input", {
-    prototype: VerificationInput
-  });
+  customElements.define('x-verification-input', VerificationInput);
 })(window, document);
 </script>
