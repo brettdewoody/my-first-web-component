@@ -1,17 +1,91 @@
 <!-- Defines the web component template -->
-<template id="verification-input-template">
+<template id="x-verification-input-template">
   <style>
-    input {
-      font-size: 24px;
+    :host {
+      all: initial;
+      display: block;
+      contain: content;
+      box-sizing: border-box;
     }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .x-verification-input {
+      justify-content: space-between;
+      display: flex;
+      font-size: 16px;
+    }
+
+    .x-verification-field-wrapper {
+      flex: 1 1;
+      margin-right: -1px;
+      border: 1px solid #cccccc;
+    }
+
+    .x-verification-field-wrapper:last-child {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      margin-right: 0px;
+    }
+
+    .x-verification-field-wrapper:first-child {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+
+    .x-verification-spacer {
+      flex: 1 1;
+      font-size: 1.8em;
+      text-align: center;
+      line-height: 2em;
+    }
+
+    .x-verification-field {
+      width: 100%;
+      font-size: 1.8em;
+      line-height: 2em;
+      text-align: center;
+      border: none;
+      border-bottom: 1px solid #222222;
+      -moz-appearance:textfield;
+      height: 2em;
+      padding: 0;
+      border: none;
+      outline: none;
+      border-radius: 5px;
+    }
+
+    .x-verification-field::-webkit-inner-spin-button,
+    .x-verification-field::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
   </style>
-  <div>
-    <input />
-    <input />
-    <input />
-    <input />
-    <input />
-    <input />
+  <div class="x-verification-input">
+    <div class="x-verification-field-wrapper">
+      <input class="x-verification-field" data-id="0" type="number" />
+    </div>
+    <div class="x-verification-field-wrapper">
+      <input class="x-verification-field" data-id="1" type="number" />
+    </div>
+    <div class="x-verification-field-wrapper">
+      <input class="x-verification-field" data-id="2" type="number" />
+    </div>
+    <div class="x-verification-spacer">
+      -
+    </div>
+    <div class="x-verification-field-wrapper">
+      <input class="x-verification-field" data-id="3" type="number" />
+    </div>
+    <div class="x-verification-field-wrapper">
+      <input class="x-verification-field" data-id="4" type="number" />
+    </div>
+    <div class="x-verification-field-wrapper">
+      <input class="x-verification-field" data-id="5" type="number" />
+    </div>
   </div>
 </template>
 
@@ -24,17 +98,91 @@
   var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
 
   // Gets content from <template>
-  const template = thisDoc.querySelector("#verification-input-template").content;
+  const template = thisDoc.querySelector("#x-verification-input-template").content;
 
   // Creates an object based in the HTML Element prototype
   class VerificationInput extends HTMLElement {
+    // Called every time the element is inserted into the DOM.
+    // Useful for running setup code, such as fetching resources or rendering.
     connectedCallback() {
+
       // Creates the shadow root
       var shadowRoot = this.createShadowRoot();
 
       // Adds a template clone into shadow root
       var clone = thatDoc.importNode(template, true);
       shadowRoot.appendChild(clone);
+
+      // onPaste Event Handler
+      shadowRoot.addEventListener("paste", () => {
+        event.preventDefault();
+        event.clipboardData.items[0].getAsString(text => {
+          text.split("").slice(0,6).forEach((char, id) => {
+            if (Number.isInteger(Number(char))) {
+              shadowRoot.querySelector(`[data-id="${id}"]`).value = Number(char)
+            }
+          });
+        })
+      });
+
+      // onKeyDown Event Handler
+      shadowRoot.addEventListener("keydown", event => {
+        switch (shadowRoot.activeElement.tagName) {
+          case "INPUT":
+            const input = shadowRoot.activeElement;
+            const id = Number(shadowRoot.activeElement.dataset.id);
+            const nextId = (id + 1) % 6;
+            const prevId = (id + 5) % 6;
+
+            // Ignore 'e'
+            if (event.keyCode === 69) {
+              event.preventDefault();
+              return;
+            }
+
+            // Handle the left arrow key
+            if (event.keyCode === 37) {
+              event.preventDefault();
+              shadowRoot.querySelector(`[data-id="${prevId}"]`).select();
+              return;
+            }
+
+            // Handle right arrow and tab keys
+            if (event.keyCode === 39 || event.keyCode === 9) {
+              event.preventDefault();
+              shadowRoot.querySelector(`[data-id="${nextId}"]`).select();
+              return;
+            }
+
+            // Handle the delete/backspace key
+            if (event.keyCode === 8 || event.keyCode === 46) {
+              event.preventDefault();
+              // If already empty, focus on previous input
+              if (input.value === "") {
+                shadowRoot.querySelector(`[data-id="${prevId}"]`).select();
+                return;
+              }
+
+              // Otherwise, clear input
+              input.value = "";
+              return;
+            }
+
+            // Handle numbers and characters
+            const key = String.fromCharCode(event.which);
+            if (Number.isInteger(Number(key))) {
+              event.preventDefault();
+              // Set the input value
+              input.value = key;
+
+              // Move focus to next input
+              shadowRoot.querySelector(`[data-id="${nextId}"]`).select();
+              return;
+            }
+            break;
+        }
+      });
+
     }
   }
 

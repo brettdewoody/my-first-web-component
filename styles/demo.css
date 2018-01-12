@@ -7,6 +7,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
+  font-family: Arial;
 }
 
 #app {
@@ -14,4 +15,13 @@ body {
   justify-content: center;
   align-items: center;
   height: 100%;
+}
+
+.container {
+  max-width: 300px;
+  text-align: center;
+}
+
+.spaced {
+  margin-bottom: 10px;
 }
