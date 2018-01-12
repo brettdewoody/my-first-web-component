@@ -114,16 +114,25 @@
       shadowRoot.appendChild(clone);
 
       // onPaste Event Handler
-      shadowRoot.addEventListener("paste", (event) => {
+      shadowRoot.addEventListener("paste", event => {
         event.preventDefault();
         this.handlePaste(event, shadowRoot);
       });
+
+      //onClick Event Handler
+      shadowRoot.addEventListener("click", event => {
+        this.handleClick(shadowRoot);
+      })
 
       // onKeyDown Event Handler
       shadowRoot.addEventListener("keydown", event => {
         this.handleKeyDown(shadowRoot);
       });
 
+    }
+
+    handleClick(shadowRoot) {
+      shadowRoot.activeElement.select();
     }
 
     handlePaste(event, shadowRoot) {
