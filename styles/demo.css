@@ -8,20 +8,27 @@ body {
   padding: 0;
   height: 100%;
   font-family: Arial;
+  background-color: #eaeaea;
 }
 
 #app {
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
   height: 100%;
 }
 
 .container {
-  max-width: 300px;
+  max-width: 360px;
   text-align: center;
+  background-color: #ffffff;
+  padding: 20px 30px;
+  margin-bottom: 20px;
+  border: 1px solid #dadada;
+  border-radius: 3px;
 }
 
-.spaced {
+.spaced:not(:last-child) {
   margin-bottom: 10px;
 }

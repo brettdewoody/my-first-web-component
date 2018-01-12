@@ -114,75 +114,91 @@
       shadowRoot.appendChild(clone);
 
       // onPaste Event Handler
-      shadowRoot.addEventListener("paste", () => {
+      shadowRoot.addEventListener("paste", (event) => {
         event.preventDefault();
-        event.clipboardData.items[0].getAsString(text => {
-          text.split("").slice(0,6).forEach((char, id) => {
-            if (Number.isInteger(Number(char))) {
-              shadowRoot.querySelector(`[data-id="${id}"]`).value = Number(char)
-            }
-          });
-        })
+        this.handlePaste(event, shadowRoot);
       });
 
       // onKeyDown Event Handler
       shadowRoot.addEventListener("keydown", event => {
-        switch (shadowRoot.activeElement.tagName) {
-          case "INPUT":
-            const input = shadowRoot.activeElement;
-            const id = Number(shadowRoot.activeElement.dataset.id);
-            const nextId = (id + 1) % 6;
-            const prevId = (id + 5) % 6;
+        this.handleKeyDown(shadowRoot);
+      });
 
-            // Ignore 'e'
-            if (event.keyCode === 69) {
-              event.preventDefault();
-              return;
-            }
+    }
 
-            // Handle the left arrow key
-            if (event.keyCode === 37) {
-              event.preventDefault();
+    handlePaste(event, shadowRoot) {
+      event.clipboardData.items[0].getAsString(text => {
+        text.split("").slice(0,6).forEach((char, id) => {
+          if (Number.isInteger(Number(char))) {
+            shadowRoot.querySelector(`[data-id="${id}"]`).value = Number(char)
+          }
+        });
+      });
+    }
+
+    handleKeyDown(shadowRoot) {
+      switch (shadowRoot.activeElement.tagName) {
+        case "INPUT":
+          const input = shadowRoot.activeElement;
+          const id = Number(shadowRoot.activeElement.dataset.id);
+          const nextId = (id + 1) % 6;
+          const prevId = (id + 5) % 6;
+
+          // Ignore 'e'
+          if (event.keyCode === 69) {
+            event.preventDefault();
+            return;
+          }
+
+          // Handle the left arrow key
+          if (event.keyCode === 37) {
+            event.preventDefault();
+            shadowRoot.querySelector(`[data-id="${prevId}"]`).select();
+            return;
+          }
+
+          // Handle right arrow and tab keys
+          if (event.keyCode === 39 || event.keyCode === 9) {
+            event.preventDefault();
+            shadowRoot.querySelector(`[data-id="${nextId}"]`).select();
+            return;
+          }
+
+          // Handle the delete/backspace key
+          if (event.keyCode === 8 || event.keyCode === 46) {
+            event.preventDefault();
+            // If already empty, focus on previous input
+            if (input.value === "") {
               shadowRoot.querySelector(`[data-id="${prevId}"]`).select();
               return;
             }
 
-            // Handle right arrow and tab keys
-            if (event.keyCode === 39 || event.keyCode === 9) {
-              event.preventDefault();
-              shadowRoot.querySelector(`[data-id="${nextId}"]`).select();
-              return;
-            }
+            // Otherwise, clear input
+            input.value = "";
+            return;
+          }
 
-            // Handle the delete/backspace key
-            if (event.keyCode === 8 || event.keyCode === 46) {
-              event.preventDefault();
-              // If already empty, focus on previous input
-              if (input.value === "") {
-                shadowRoot.querySelector(`[data-id="${prevId}"]`).select();
-                return;
-              }
+          // Handle numbers and characters
+          const key = String.fromCharCode(event.which);
+          if (Number.isInteger(Number(key))) {
+            event.preventDefault();
+            // Set the input value
+            input.value = key;
 
-              // Otherwise, clear input
-              input.value = "";
-              return;
-            }
+            // Move focus to next input
+            shadowRoot.querySelector(`[data-id="${nextId}"]`).select();
+            return;
+          }
 
-            // Handle numbers and characters
-            const key = String.fromCharCode(event.which);
-            if (Number.isInteger(Number(key))) {
-              event.preventDefault();
-              // Set the input value
-              input.value = key;
+          break;
+      }
+    }
 
-              // Move focus to next input
-              shadowRoot.querySelector(`[data-id="${nextId}"]`).select();
-              return;
-            }
-            break;
-        }
-      });
-
+    // Method to return the complete code
+    getCode() {
+      const inputs = Array.from(this.shadowRoot.querySelectorAll(".x-verification-field"));
+      const code = inputs.reduce((code, el) => code + el.value, "")
+      return code;
     }
   }
 

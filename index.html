@@ -15,14 +15,18 @@
 <body>
   <div id="app">
     <!-- Runs custom element -->
+    <p>Sample Code: 112358</p>
     <div class="container">
-      <p>Sample Code: 112358</p>
       <div class="spaced">
-        <x-verification-input></x-verification-input>
+        <x-verification-input id="code1"></x-verification-input>
       </div>
       <div class="spaced">
-        <x-verification-input></x-verification-input>
+        <x-verification-input id="code2"></x-verification-input>
       </div>
+    </div>
+    <div>
+      <button onclick="alert(document.getElementById('code1').getCode())">Get Code 1</button>
+      <button onclick="alert(document.getElementById('code2').getCode())">Get Code 2</button>
     </div>
   </div>
 </body>
