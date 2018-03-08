@@ -51,7 +51,7 @@
       border-bottom: 1px solid #222222;
       -moz-appearance:textfield;
       height: 2em;
-      padding: 0;
+      padding: 0 0.25em;
       border: none;
       outline: none;
       border-radius: 5px;
@@ -66,25 +66,25 @@
   </style>
   <div class="x-verification-input">
     <div class="x-verification-field-wrapper">
-      <input class="x-verification-field" data-id="0" type="number" aria-label="Digit 1" />
+      <input class="x-verification-field" data-id="0" min="0" max="9" type="number" aria-label="Digit 1" />
     </div>
     <div class="x-verification-field-wrapper">
-      <input class="x-verification-field" data-id="1" type="number" aria-label="Digit 2" />
+      <input class="x-verification-field" data-id="1" min="0" max="9" type="number" aria-label="Digit 2" />
     </div>
     <div class="x-verification-field-wrapper">
-      <input class="x-verification-field" data-id="2" type="number" aria-label="Digit 3" />
+      <input class="x-verification-field" data-id="2" min="0" max="9" type="number" aria-label="Digit 3" />
     </div>
     <div class="x-verification-spacer">
       -
     </div>
     <div class="x-verification-field-wrapper">
-      <input class="x-verification-field" data-id="3" type="number" aria-label="Digit 4" />
+      <input class="x-verification-field" data-id="3" min="0" max="9" type="number" aria-label="Digit 4" />
     </div>
     <div class="x-verification-field-wrapper">
-      <input class="x-verification-field" data-id="4" type="number" aria-label="Digit 5" />
+      <input class="x-verification-field" data-id="4" min="0" max="9" type="number" aria-label="Digit 5" />
     </div>
     <div class="x-verification-field-wrapper">
-      <input class="x-verification-field" data-id="5" type="number" aria-label="Digit 6" />
+      <input class="x-verification-field" data-id="5" min="0" max="9" type="number" aria-label="Digit 6" />
     </div>
   </div>
 </template>
@@ -159,21 +159,21 @@
             return;
           }
 
-          // Handle the left arrow key
+          // Handle left arrow key
           if (event.keyCode === 37) {
             event.preventDefault();
             shadowRoot.querySelector(`[data-id="${prevId}"]`).select();
             return;
           }
 
-          // Handle right arrow and tab keys
+          // Handle right arrow or tab key
           if (event.keyCode === 39 || event.keyCode === 9) {
             event.preventDefault();
             shadowRoot.querySelector(`[data-id="${nextId}"]`).select();
             return;
           }
 
-          // Handle the delete/backspace key
+          // Handle the delete or backspace key
           if (event.keyCode === 8 || event.keyCode === 46) {
             event.preventDefault();
             // If already empty, focus on previous input
