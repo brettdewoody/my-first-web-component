@@ -132,7 +132,9 @@
     }
 
     handleClick(shadowRoot) {
-      shadowRoot.activeElement.select();
+      if (shadowRoot.activeElement) {
+        shadowRoot.activeElement.select();
+      }
     }
 
     handlePaste(event, shadowRoot) {
