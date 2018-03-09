@@ -161,7 +161,7 @@
 
     handlePaste(event, shadowRoot) {
       event.clipboardData.items[0].getAsString(text => {
-        text.split("").slice(0,6).forEach((char, id) => {
+        text.split("").slice(0, this.inputs.length).forEach((char, id) => {
           if (Number.isInteger(Number(char))) {
             this.inputs[id].value = Number(char);
           }
@@ -174,9 +174,9 @@
         case "INPUT":
           const activeInput = shadowRoot.activeElement;
           const inputVal = activeInput.value;
-          const id = this.inputs.findIndex(input => input === activeInput);
+          const id = this.inputs.indexOf(activeInput);
           const nextId = (id + 1) % this.inputs.length;
-          const prevId = (id + 5) % this.inputs.length;
+          const prevId = (id + this.inputs.length - 1) % this.inputs.length;
           const key = String.fromCharCode(event.which);
 
           // Ignore 'e'
