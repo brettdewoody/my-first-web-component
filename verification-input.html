@@ -189,8 +189,8 @@
 
           // Handle numbers and characters
           const key = String.fromCharCode(event.which);
+          event.preventDefault();
           if (Number.isInteger(Number(key))) {
-            event.preventDefault();
             // Set the input value
             input.value = key;
 
