@@ -214,10 +214,16 @@
     setCode(code) {
       const codeArr = code.toString().split("");
       const inputs = Array.from(this.shadowRoot.querySelectorAll(".x-verification-field"));
-      inputs.forEach((input, index) => {
-        input.value = codeArr[index];
-      })
+      inputs.forEach((input, index) => input.value = codeArr[index]);
       return code;
+    }
+
+    // Method to clear the complete code
+    clearCode() {
+      const inputs = Array.from(this.shadowRoot.querySelectorAll(".x-verification-field"));
+      inputs.forEach((input, index) => input.value = "");
+      inputs[0].focus();
+      return;
     }
   }
 
