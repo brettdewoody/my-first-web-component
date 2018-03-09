@@ -23,3 +23,11 @@
 * `getCode()` - returns the current value
 
    Example: `document.getElementById([ID]).getCode();`
+
+* `setCode([NUMBER])` - customElements the current value
+
+   Example: `document.getElementById([ID]).setCode(123456);`
+
+* `clearCode()` - returns the current value
+
+   Example: `document.getElementById([ID]).clearCode();`
