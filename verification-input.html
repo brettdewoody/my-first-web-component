@@ -209,6 +209,16 @@
       const code = inputs.reduce((code, el) => code + el.value, "")
       return code;
     }
+
+    // Method to set the complete code
+    setCode(code) {
+      const codeArr = code.toString().split("");
+      const inputs = Array.from(this.shadowRoot.querySelectorAll(".x-verification-field"));
+      inputs.forEach((input, index) => {
+        input.value = codeArr[index];
+      })
+      return code;
+    }
   }
 
   customElements.define('x-verification-input', VerificationInput);
