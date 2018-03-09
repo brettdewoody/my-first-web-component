@@ -102,10 +102,18 @@
 
   // Creates an object based in the HTML Element prototype
   class VerificationInput extends HTMLElement {
+    // observedAttributes() - https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
+    // Specify observed attributes so that attributeChangedCallback will work
+    static get observedAttributes() {
+      return ["value"];
+    }
+
     // Useful for initializing state, settings up event listeners, or creating shadow dom.
     constructor() {
       super();
 
+      // attachShadow() - https://developer.mozilla.org/en-US/docs/Web/API/Element/attachShadow
+      // Attaches a shadow DOM tree to the specified element and returns a reference to its ShadowRoot
       const shadowRoot = this.attachShadow({mode: 'open'});
       shadowRoot.appendChild(template.cloneNode(true));
 
@@ -122,12 +130,29 @@
         this.handleKeyDown(event, shadowRoot);
       });
 
+      // onPaste Event Handler
       shadowRoot.addEventListener("paste", event => {
         event.preventDefault();
         this.handlePaste(event, shadowRoot);
       });
     }
 
+    // connectedCallback() - https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
+    // Called every time the element is inserted into the DOM.
+    // Useful for running setup code, such as fetching resources or rendering.
+    connectedCallback() {
+      if (this.hasAttribute("value")) {
+        this.setCode(this.getAttribute("value"));
+      }
+    }
+
+    // attributeChangedCallback() - https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
+    // Only called for the 'value' attribute due to observedAttributes
+    attributeChangedCallback(name, oldValue, newValue) {
+      this.setCode(newValue);
+    }
+
+    // Handlers
     handleClick(shadowRoot) {
       if (shadowRoot.activeElement) {
         shadowRoot.activeElement.select();
@@ -244,6 +269,8 @@
     }
   }
 
+  // Define the new custom Element
+  // https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/define
   customElements.define('x-verification-input', VerificationInput);
 })(window, document);
 </script>
