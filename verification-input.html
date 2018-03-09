@@ -66,25 +66,25 @@
   </style>
   <div class="x-verification-input">
     <div class="x-verification-field-wrapper">
-      <input class="x-verification-field" data-id="0" min="0" max="9" type="number" aria-label="Digit 1" />
+      <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 1" />
     </div>
     <div class="x-verification-field-wrapper">
-      <input class="x-verification-field" data-id="1" min="0" max="9" type="number" aria-label="Digit 2" />
+      <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 2" />
     </div>
     <div class="x-verification-field-wrapper">
-      <input class="x-verification-field" data-id="2" min="0" max="9" type="number" aria-label="Digit 3" />
+      <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 3" />
     </div>
     <div class="x-verification-spacer">
       -
     </div>
     <div class="x-verification-field-wrapper">
-      <input class="x-verification-field" data-id="3" min="0" max="9" type="number" aria-label="Digit 4" />
+      <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 4" />
     </div>
     <div class="x-verification-field-wrapper">
-      <input class="x-verification-field" data-id="4" min="0" max="9" type="number" aria-label="Digit 5" />
+      <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 5" />
     </div>
     <div class="x-verification-field-wrapper">
-      <input class="x-verification-field" data-id="5" min="0" max="9" type="number" aria-label="Digit 6" />
+      <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 6" />
     </div>
   </div>
 </template>
@@ -92,43 +92,40 @@
 <script>
 (function(window, document, undefined) {
   // Refers to the "importer"
-  var thatDoc = document;
+  const thatDoc = document;
 
   // Refers to the "importee"
-  var thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
+  const thisDoc = (thatDoc._currentScript || thatDoc.currentScript).ownerDocument;
 
   // Gets content from <template>
   const template = thisDoc.querySelector("#x-verification-input-template").content;
 
   // Creates an object based in the HTML Element prototype
   class VerificationInput extends HTMLElement {
-    // Called every time the element is inserted into the DOM.
-    // Useful for running setup code, such as fetching resources or rendering.
-    connectedCallback() {
+    // Useful for initializing state, settings up event listeners, or creating shadow dom.
+    constructor() {
+      super();
 
-      // Creates the shadow root
-      var shadowRoot = this.createShadowRoot();
+      const shadowRoot = this.attachShadow({mode: 'open'});
+      shadowRoot.appendChild(template.cloneNode(true));
 
-      // Adds a template clone into shadow root
-      var clone = thatDoc.importNode(template, true);
-      shadowRoot.appendChild(clone);
-
-      // onPaste Event Handler
-      shadowRoot.addEventListener("paste", event => {
-        event.preventDefault();
-        this.handlePaste(event, shadowRoot);
-      });
+      this.inputSelector = ".x-verification-field";
+      this.inputs = Array.from(this.shadowRoot.querySelectorAll(this.inputSelector));
 
       //onClick Event Handler
-      shadowRoot.addEventListener("click", event => {
+      this.addEventListener("click", event => {
         this.handleClick(shadowRoot);
       })
 
       // onKeyDown Event Handler
-      shadowRoot.addEventListener("keydown", event => {
-        this.handleKeyDown(shadowRoot);
+      this.addEventListener("keydown", event => {
+        this.handleKeyDown(event, shadowRoot);
       });
 
+      shadowRoot.addEventListener("paste", event => {
+        event.preventDefault();
+        this.handlePaste(event, shadowRoot);
+      });
     }
 
     handleClick(shadowRoot) {
@@ -141,20 +138,21 @@
       event.clipboardData.items[0].getAsString(text => {
         text.split("").slice(0,6).forEach((char, id) => {
           if (Number.isInteger(Number(char))) {
-            shadowRoot.querySelector(`[data-id="${id}"]`).value = Number(char)
+            this.inputs[id].value = Number(char);
           }
         });
       });
     }
 
-    handleKeyDown(shadowRoot) {
+    handleKeyDown(event, shadowRoot) {
       switch (shadowRoot.activeElement.tagName) {
         case "INPUT":
-          const input = shadowRoot.activeElement;
-          const inputVal = input.value;
-          const id = Number(shadowRoot.activeElement.dataset.id);
-          const nextId = (id + 1) % 6;
-          const prevId = (id + 5) % 6;
+          const activeInput = shadowRoot.activeElement;
+          const inputVal = activeInput.value;
+          const id = this.inputs.findIndex(input => input === activeInput);
+          const nextId = (id + 1) % this.inputs.length;
+          const prevId = (id + 5) % this.inputs.length;
+          const key = String.fromCharCode(event.which);
 
           // Ignore 'e'
           if (event.keyCode === 69) {
@@ -165,28 +163,28 @@
           // Handle up arrow key, when value is 9
           if (event.keyCode === 38 && inputVal === "9") {
             event.preventDefault();
-            input.value = 0;
+            activeInput.value = 0;
             return;
           }
 
           // Handle down arrow key, when value is 0
           if (event.keyCode === 40 && inputVal === "0") {
             event.preventDefault();
-            input.value = 9;
+            activeInput.value = 9;
             return;
           }
 
           // Handle left arrow key
           if (event.keyCode === 37) {
             event.preventDefault();
-            shadowRoot.querySelector(`[data-id="${prevId}"]`).select();
+            this.inputs[prevId].select();
             return;
           }
 
           // Handle right arrow or tab key
           if (event.keyCode === 39 || event.keyCode === 9) {
             event.preventDefault();
-            shadowRoot.querySelector(`[data-id="${nextId}"]`).select();
+            this.inputs[nextId].select();
             return;
           }
 
@@ -194,27 +192,28 @@
           if (event.keyCode === 8 || event.keyCode === 46) {
             event.preventDefault();
             // If already empty, focus on previous input
-            if (input.value === "") {
-              shadowRoot.querySelector(`[data-id="${prevId}"]`).select();
+            if (inputVal === "") {
+              this.inputs[prevId].select();
               return;
             }
 
             // Otherwise, clear input
-            input.value = "";
+            activeInput.value = "";
             return;
           }
 
-          // Handle numbers and characters
-          const key = String.fromCharCode(event.which);
+          // If letter, and not with a metakey
           if (key.match(/[a-z]/i) && !event.metaKey) {
             event.preventDefault();
+
+            // If number
           } else if (Number.isInteger(Number(key))) {
             event.preventDefault();
             // Set the input value
-            input.value = key;
+            activeInput.value = key;
 
             // Move focus to next input
-            shadowRoot.querySelector(`[data-id="${nextId}"]`).select();
+            this.inputs[nextId].select();
             return;
           } else {
             return;
@@ -224,26 +223,23 @@
       }
     }
 
-    // Method to return the complete code
+    // Method to return the code
     getCode() {
-      const inputs = Array.from(this.shadowRoot.querySelectorAll(".x-verification-field"));
-      const code = inputs.reduce((code, el) => code + el.value, "")
+      const code = this.inputs.reduce((code, el) => code + el.value, "");
       return code;
     }
 
-    // Method to set the complete code
+    // Method to set the code
     setCode(code) {
       const codeArr = code.toString().split("");
-      const inputs = Array.from(this.shadowRoot.querySelectorAll(".x-verification-field"));
-      inputs.forEach((input, index) => input.value = codeArr[index]);
+      this.inputs.forEach((input, index) => input.value = codeArr[index]);
       return code;
     }
 
-    // Method to clear the complete code
+    // Method to clear the code
     clearCode() {
-      const inputs = Array.from(this.shadowRoot.querySelectorAll(".x-verification-field"));
-      inputs.forEach((input, index) => input.value = "");
-      inputs[0].focus();
+      this.inputs.forEach((input, index) => input.value = "");
+      this.inputs[0].focus();
       return;
     }
   }
