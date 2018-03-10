@@ -18,7 +18,15 @@
 
    where `[ID]` is a unique ID, or leave off the `id` attribute entirely.
 
-## Web component methods
+## Attributes
+
+* `id` - [optional] - useful for selecting the element
+
+* `value` - [optional] - to set the initial code  
+
+  Updating the `value` attribute with `.setAttribute("value", [newValue])` will update the component's value.
+
+## Methods
 
 * `getCode()` - returns the current value
 
@@ -31,3 +39,4 @@
 * `clearCode()` - returns the current value
 
    Example: `document.getElementById([ID]).clearCode();`
+
