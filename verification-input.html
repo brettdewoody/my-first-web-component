@@ -117,27 +117,20 @@
 
       // attachShadow() - https://developer.mozilla.org/en-US/docs/Web/API/Element/attachShadow
       // Attaches a shadow DOM tree to the specified element and returns a reference to its ShadowRoot
-      const shadowRoot = this.attachShadow({mode: 'open'});
-      shadowRoot.appendChild(template.cloneNode(true));
+      this.attachShadow({mode: 'open'});
+      this.shadowRoot.appendChild(template.cloneNode(true));
 
       this.inputSelector = ".x-verification-field";
       this.inputs = Array.from(this.shadowRoot.querySelectorAll(this.inputSelector));
 
       //onClick Event Handler
-      this.addEventListener("click", event => {
-        this.handleClick(shadowRoot);
-      })
+      this.addEventListener("click", this.handleClick);
 
       // onKeyDown Event Handler
-      this.addEventListener("keydown", event => {
-        this.handleKeyDown(event, shadowRoot);
-      });
+      this.addEventListener("keydown", this.handleKeyDown);
 
       // onPaste Event Handler
-      shadowRoot.addEventListener("paste", event => {
-        event.preventDefault();
-        this.handlePaste(event, shadowRoot);
-      });
+      this.shadowRoot.addEventListener("paste", this.handlePaste);
     }
 
     // connectedCallback() - https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
@@ -156,13 +149,14 @@
     }
 
     // Handlers
-    handleClick(shadowRoot) {
-      if (shadowRoot.activeElement) {
-        shadowRoot.activeElement.select();
+    handleClick() {
+      if (this.shadowRoot.activeElement) {
+        this.shadowRoot.activeElement.select();
       }
     }
 
-    handlePaste(event, shadowRoot) {
+    handlePaste(event) {
+      event.preventDefault();
       event.clipboardData.items[0].getAsString(text => {
         text.split("").slice(0, this.inputs.length).forEach((char, id) => {
           if (Number.isInteger(Number(char))) {
@@ -172,10 +166,10 @@
       });
     }
 
-    handleKeyDown(event, shadowRoot) {
-      switch (shadowRoot.activeElement.tagName) {
+    handleKeyDown(event) {
+      switch (this.shadowRoot.activeElement.tagName) {
         case "INPUT":
-          const activeInput = shadowRoot.activeElement;
+          const activeInput = this.shadowRoot.activeElement;
           const inputVal = activeInput.value;
           const id = this.inputs.indexOf(activeInput);
           const nextId = (id + 1) % this.inputs.length;
