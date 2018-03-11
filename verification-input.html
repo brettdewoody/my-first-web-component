@@ -2,22 +2,20 @@
 <template id="x-verification-input-template">
   <style>
     :host {
+      --border-radius: 5px;
+
       all: initial;
       display: block;
       contain: content;
       box-sizing: border-box;
-      --border-radius: 5px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    .x-verification-input {
       justify-content: space-between;
       display: flex;
       font-size: 16px;
       border-radius: var(--border-radius);
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     .x-verification-field-wrapper {
@@ -27,13 +25,13 @@
       background-color: #ffffff;
     }
 
-    .x-verification-field-wrapper:last-child {
+    .x-verification-field-wrapper.x-verification-field-wrapper--last {
       border-top-right-radius: var(--border-radius);
       border-bottom-right-radius: var(--border-radius);
       margin-right: 0px;
     }
 
-    .x-verification-field-wrapper:first-child {
+    .x-verification-field-wrapper.x-verification-field-wrapper--first {
       border-top-left-radius: var(--border-radius);
       border-bottom-left-radius: var(--border-radius);
     }
@@ -65,30 +63,28 @@
       -webkit-appearance: none;
       margin: 0;
     }
-
   </style>
-  <div class="x-verification-input">
-    <div class="x-verification-field-wrapper">
-      <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 1" />
-    </div>
-    <div class="x-verification-field-wrapper">
-      <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 2" />
-    </div>
-    <div class="x-verification-field-wrapper">
-      <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 3" />
-    </div>
-    <div class="x-verification-spacer">
-      -
-    </div>
-    <div class="x-verification-field-wrapper">
-      <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 4" />
-    </div>
-    <div class="x-verification-field-wrapper">
-      <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 5" />
-    </div>
-    <div class="x-verification-field-wrapper">
-      <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 6" />
-    </div>
+
+  <div class="x-verification-field-wrapper x-verification-field-wrapper--first">
+    <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 1" />
+  </div>
+  <div class="x-verification-field-wrapper">
+    <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 2" />
+  </div>
+  <div class="x-verification-field-wrapper">
+    <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 3" />
+  </div>
+  <div class="x-verification-spacer">
+    -
+  </div>
+  <div class="x-verification-field-wrapper">
+    <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 4" />
+  </div>
+  <div class="x-verification-field-wrapper">
+    <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 5" />
+  </div>
+  <div class="x-verification-field-wrapper x-verification-field-wrapper--last">
+    <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 6" />
   </div>
 </template>
 
@@ -133,6 +129,10 @@
       this.shadowRoot.addEventListener("paste", this.handlePaste);
     }
 
+    //==============================================
+    // Lifecycle Methods
+    //==============================================
+
     // connectedCallback() - https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
     // Called every time the element is inserted into the DOM.
     // Useful for running setup code, such as fetching resources or rendering.
@@ -148,7 +148,9 @@
       this.setCode(newValue);
     }
 
-    // Handlers
+    //==============================================
+    // Event Handlers
+    //==============================================
     handleClick() {
       if (this.shadowRoot.activeElement) {
         this.shadowRoot.activeElement.select();
@@ -244,6 +246,10 @@
           break;
       }
     }
+
+    //==============================================
+    // Custom Element Methods
+    //==============================================
 
     // Method to return the code
     getCode() {
