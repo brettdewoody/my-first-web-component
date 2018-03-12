@@ -24,7 +24,7 @@ body {
 }
 
 .codeInput {
-  max-width: 300px;
+  display: inline-block;
   margin: 0 auto 10px auto;
 }
 

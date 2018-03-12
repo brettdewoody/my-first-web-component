@@ -25,24 +25,32 @@
     <p>Sample Code: 112358</p>
     <div class="container">
       <div class="spaced">
-        <x-verification-input id="code1" class="codeInput"></x-verification-input>
+        <div>
+          <x-verification-input id="code1" class="codeInput">Test</x-verification-input>
+        </div>
         <button onclick="alert(document.getElementById('code1').value)">Get Code</button>
         <button onclick="document.getElementById('code1').value = 123456">Set Code using <code>.value</code></button>
         <button onclick="document.getElementById('code1').clear()">Clear Code</button>
       </div>
       <div class="spaced">
-        <x-verification-input id="code2" class="codeInput" value="987654"></x-verification-input>
+        <div>
+          <x-verification-input id="code2" class="codeInput" value="987654"></x-verification-input>
+        </div>
         <button onclick="alert(document.getElementById('code2').value)">Get Code</button>
         <span>Value is set with a <code>value</code> attribute</span>
         <button onclick="document.getElementById('code2').clear()">Clear Code</button>
       </div>
       <div class="spaced">
-        <x-verification-input id="code3" class="codeInput"></x-verification-input>
+        <div>
+          <x-verification-input id="code3" class="codeInput"></x-verification-input>
+        </div>
         <button onclick="alert(document.getElementById('code3').value)">Get Code</button>
         <button onclick="document.getElementById('code3').setAttribute('value', 111111)">Set Code using <code>setAttribute()</code></button>
         <button onclick="document.getElementById('code3').clear()">Clear Code</button>
       </div>
       <div class="spaced">
+        <div>
+        </div>
         <button onclick="addValidationElement()">Add Validation Element</button>
       </div>
     </div>
@@ -50,9 +58,8 @@
 
   <script>
     const addValidationElement = function() {
-
-      event.target.parentNode.innerHTML = `
-        <x-verification-input class='codeInput'></x-verification-input>
+      event.target.parentNode.children[0].innerHTML = `
+        <x-verification-input class='codeInput'></x-verification-input><br/>
         <button onClick="this.parentNode.innerHTML=''">Remove</button>
       `;
     }
