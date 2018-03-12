@@ -7,6 +7,11 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Web components polyfill
+       https://github.com/webcomponents/webcomponentsjs
+  -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.1.0/webcomponents-loader.js"></script>
+
   <!-- Import demo CSS -->
   <link rel="stylesheet" type="text/css" href="styles/demo.css" />
 
@@ -22,7 +27,7 @@
       <div class="spaced">
         <x-verification-input id="code1" class="codeInput"></x-verification-input>
         <button onclick="alert(document.getElementById('code1').code)">Get Code</button>
-        <button onclick="document.getElementById('code1').code = '123456'">Set Code using <code>.code</code></button>
+        <button onclick="document.getElementById('code1').code = 123456">Set Code using <code>.code</code></button>
         <button onclick="document.getElementById('code1').clear()">Clear Code</button>
       </div>
       <div class="spaced">
