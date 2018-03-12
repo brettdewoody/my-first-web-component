@@ -137,14 +137,14 @@
     // Useful for running setup code, such as fetching resources or rendering.
     connectedCallback() {
       if (this.hasAttribute("value")) {
-        this.code = this.getAttribute("value");
+        this.value = this.getAttribute("value");
       }
     }
 
     // attributeChangedCallback() - https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
     // Only called for the 'value' attribute due to observedAttributes
     attributeChangedCallback(name, oldValue, newValue) {
-      this.code = newValue;
+      this.value = newValue;
     }
 
     //==============================================
@@ -251,14 +251,14 @@
     // Custom Element Methods
     //==============================================
 
-    // Method to return the code
-    get code() {
+    // Method to return the value
+    get value() {
       const code = this.inputs.reduce((code, el) => code + el.value, "");
       return code;
     }
 
     // Method to set the code
-    set code(code) {
+    set value(code) {
       const codeArr = code.toString().split("");
       this.inputs.forEach((input, index) => input.value = codeArr[index]);
       return code;

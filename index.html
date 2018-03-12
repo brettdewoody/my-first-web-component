@@ -26,19 +26,19 @@
     <div class="container">
       <div class="spaced">
         <x-verification-input id="code1" class="codeInput"></x-verification-input>
-        <button onclick="alert(document.getElementById('code1').code)">Get Code</button>
-        <button onclick="document.getElementById('code1').code = 123456">Set Code using <code>.code</code></button>
+        <button onclick="alert(document.getElementById('code1').value)">Get Code</button>
+        <button onclick="document.getElementById('code1').value = 123456">Set Code using <code>.value</code></button>
         <button onclick="document.getElementById('code1').clear()">Clear Code</button>
       </div>
       <div class="spaced">
         <x-verification-input id="code2" class="codeInput" value="987654"></x-verification-input>
-        <button onclick="alert(document.getElementById('code2').code)">Get Code</button>
+        <button onclick="alert(document.getElementById('code2').value)">Get Code</button>
         <span>Value is set with a <code>value</code> attribute</span>
         <button onclick="document.getElementById('code2').clear()">Clear Code</button>
       </div>
       <div class="spaced">
         <x-verification-input id="code3" class="codeInput"></x-verification-input>
-        <button onclick="alert(document.getElementById('code3').code)">Get Code</button>
+        <button onclick="alert(document.getElementById('code3').value)">Get Code</button>
         <button onclick="document.getElementById('code3').setAttribute('value', 111111)">Set Code using <code>setAttribute()</code></button>
         <button onclick="document.getElementById('code3').clear()">Clear Code</button>
       </div>
