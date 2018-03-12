@@ -1,5 +1,5 @@
 <!-- Defines the web component template -->
-<template id="x-verification-input">
+<template id="custom-element-template">
   <style>
     :host {
       --border-radius: 5px;
@@ -94,14 +94,11 @@
 
 <script>
 (function(window, document) {
-  // Refers to the "importer"
-  const thatDoc = document;
-
-  // Refers to the "importee"
-  const thisDoc = thatDoc.currentScript.ownerDocument;
+  // Refers to this document, verification-input.html
+  const thisDoc = document.currentScript.ownerDocument;
 
   // Gets content from <template>
-  const template = thisDoc.querySelector("#x-verification-input").content;
+  const template = thisDoc.querySelector("#custom-element-template").content;
 
   // Creates an object based in the HTML Element prototype
   class VerificationInput extends HTMLElement {
