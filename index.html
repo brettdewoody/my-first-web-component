@@ -48,21 +48,7 @@
         <button onclick="document.getElementById('code3').setAttribute('value', 111111)">Set Code using <code>setAttribute()</code></button>
         <button onclick="document.getElementById('code3').clear()">Clear Code</button>
       </div>
-      <div class="spaced">
-        <div>
-        </div>
-        <button onclick="addValidationElement()">Add Validation Element</button>
-      </div>
     </div>
   </div>
-
-  <script>
-    const addValidationElement = function() {
-      event.target.parentNode.children[0].innerHTML = `
-        <x-verification-input class='codeInput'></x-verification-input><br/>
-        <button onClick="this.parentNode.innerHTML=''">Remove</button>
-      `;
-    }
-  </script>
 </body>
 </html>
