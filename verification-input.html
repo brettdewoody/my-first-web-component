@@ -125,7 +125,7 @@
       this.addEventListener("keydown", this.handleKeyDown);
 
       // onPaste Event Handler
-      this.shadowRoot.addEventListener("paste", this.handlePaste);
+      this.shadowRoot.addEventListener("paste", event => this.handlePaste(event));
     }
 
     //==============================================
@@ -157,6 +157,7 @@
     }
 
     handlePaste(event) {
+      event.stopPropagation();
       event.preventDefault();
       event.clipboardData.items[0].getAsString(text => {
         text.split("").slice(0, this.inputs.length).forEach((char, id) => {
