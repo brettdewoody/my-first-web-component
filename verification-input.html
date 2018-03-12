@@ -3,18 +3,22 @@
   <style>
     :host {
       --border-radius: 5px;
+      display: inline-block;
+    }
 
+    * {
+      box-sizing: border-box;
+    }
+
+    .x-verification-container {
       all: initial;
       contain: content;
       box-sizing: border-box;
       display: flex;
       justify-content: space-between;
       font-size: 16px;
+      max-width: 300px;
       border-radius: var(--border-radius);
-    }
-
-    * {
-      box-sizing: border-box;
     }
 
     .x-verification-field-wrapper {
@@ -63,27 +67,28 @@
       margin: 0;
     }
   </style>
-
-  <div class="x-verification-field-wrapper x-verification-field-wrapper--first">
-    <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 1" />
-  </div>
-  <div class="x-verification-field-wrapper">
-    <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 2" />
-  </div>
-  <div class="x-verification-field-wrapper">
-    <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 3" />
-  </div>
-  <div class="x-verification-spacer">
-    -
-  </div>
-  <div class="x-verification-field-wrapper">
-    <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 4" />
-  </div>
-  <div class="x-verification-field-wrapper">
-    <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 5" />
-  </div>
-  <div class="x-verification-field-wrapper x-verification-field-wrapper--last">
-    <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 6" />
+  <div class="x-verification-container">
+    <div class="x-verification-field-wrapper x-verification-field-wrapper--first">
+      <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 1" />
+    </div>
+    <div class="x-verification-field-wrapper">
+      <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 2" />
+    </div>
+    <div class="x-verification-field-wrapper">
+      <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 3" />
+    </div>
+    <div class="x-verification-spacer">
+      -
+    </div>
+    <div class="x-verification-field-wrapper">
+      <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 4" />
+    </div>
+    <div class="x-verification-field-wrapper">
+      <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 5" />
+    </div>
+    <div class="x-verification-field-wrapper x-verification-field-wrapper--last">
+      <input class="x-verification-field" min="0" max="9" type="number" aria-label="Digit 6" />
+    </div>
   </div>
 </template>
 
