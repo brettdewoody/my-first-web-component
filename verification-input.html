@@ -253,20 +253,20 @@
     // Custom Element Methods
     //==============================================
 
-    // Method to return the value
+    // Method to return the passcode
     get value() {
-      const code = this.inputs.reduce((code, el) => code + el.value, "");
-      return code;
+      const passcode = this.inputs.reduce((passcode, el) => passcode + el.value, "");
+      return passcode;
     }
 
-    // Method to set the code
-    set value(code) {
-      const codeArr = code.toString().split("");
+    // Method to set the passcode
+    set value(passcode) {
+      const codeArr = passcode.toString().split("");
       this.inputs.forEach((input, index) => input.value = codeArr[index]);
-      return code;
+      return passcode;
     }
 
-    // Method to clear the code
+    // Method to clear the passcode
     clear() {
       this.inputs.forEach((input, index) => input.value = "");
       this.inputs[0].focus();
